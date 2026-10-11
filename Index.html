@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secret Surprise 😂</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: white;
+  background: radial-gradient(circle at top, #50215f, #100d25 70%);
+}
+
+.card {
+  width: 100%;
+  max-width: 390px;
+  padding: 30px 22px;
+  text-align: center;
+  background: #211831;
+  border: 1px solid #bd70ff;
+  border-radius: 24px;
+  box-shadow: 0 0 35px #bc65ff35;
+  animation: appear .5s ease;
+}
+
+#emoji { font-size: 55px; }
+
+#label {
+  color: #e6b6ff;
+  letter-spacing: 2px;
+  font-size: 11px;
+}
+
+h1 { color: #ffb9e6; }
+
+p {
+  line-height: 1.8;
+  white-space: pre-line;
+  color: #eee3fa;
+}
+
+button {
+  width: 100%;
+  padding: 15px 10px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 13px;
+  background: linear-gradient(90deg, #d58aff, #ff8ecb);
+  color: #25102e;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .7;
+}
+
+#hint {
+  color: #b9a8ce;
+  font-size: 12px;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 3px solid #ffffff50;
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 5.0s linear infinite;
+  vertical-align: middle;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div id="emoji">👀</div>
+  <p id="label">TOP SECRET 🤫</p>
+  <h1 id="title">Oye Dushyant!</h1>
+  <p id="message">Tere liye kuch hai... 😏
+Par pehle button daba!</p>
+  <button id="next">Kya hai? Bata! 😂</button>
+  <p id="hint">Suspense shuru hota hai...</p>
+</div>
+
+<script>
+const friendName = "Dushyant";
+const yourName = "Divesh";
+
+const screens = [
+  {
+    emoji: "🤭",
+    label: "LEVEL 1",
+    title: "Shanti bhdk!",
+    message: "Itni bhi kya jaldi hai? 😂",
+    button: "Ab bata bhi de! 😤"
+  },
+  {
+    emoji: "🔐",
+    label: "LEVEL 2",
+    title: "Ruk ja zara!",
+    message: "Surprise loading hai...\nServer chai pe gaya hai! ☕😂",
+    button: "Jaldi kar yaar! 😭"
+  },
+  {
+    emoji: "😈",
+    label: "LEVEL 3",
+    title: "Last warning!",
+    message: "Bas ab sach mein surprise aane wala hai! 👀",
+    button: "FINAL SURPRISE 💗"
+  }
+];
+
+let step = 0;
+let busy = false;
+let finished = false;
+
+const emoji = document.getElementById("emoji");
+const label = document.getElementById("label");
+const title = document.getElementById("title");
+const message = document.getElementById("message");
+const button = document.getElementById("next");
+const hint = document.getElementById("hint");
+const card = document.querySelector(".card");
+
+function showScreen(data) {
+  card.style.animation = "none";
+  void card.offsetWidth;
+  card.style.animation = "appear .5s ease";
+
+  emoji.textContent = data.emoji;
+  label.textContent = data.label;
+  title.textContent = data.title;
+  message.textContent = data.message;
+  button.textContent = data.button;
+}
+
+button.addEventListener("click", () => {
+  if (busy || finished) return;
+
+  busy = true;
+  button.disabled = true;
+
+  emoji.innerHTML = '<span class="loading"></span>';
+  label.textContent = "PLEASE WAIT";
+  title.textContent = "Loading surprise...";
+  message.textContent = "Bas ek chhota sa wait 😂";
+  button.textContent = "Loading...";
+
+  setTimeout(() => {
+    if (step < screens.length) {
+      showScreen(screens[step]);
+      step++;
+
+      hint.textContent = "Aage kya hoga? 👀";
+    } else {
+      finished = true;
+
+      showScreen({
+        emoji: "💗",
+        label: "SURPRISE UNLOCKED",
+        title: "Oye " + friendName + "! 😂",
+        message:
+          "Hahaha! Itna suspense! 🤣\n\n" +
+          "Bas kehna tha ki tu ek mast dost hai. 💖\n" +
+          "Thanks for all the laughs and memories.\n\n" +
+          "Apni funny wali harkatein mat chhodna,\n" +
+          "aur hamesha aise hi khush rehna! 🌸\n\n" +
+          "— From " + yourName,
+        button: "Surprise complete 💕"
+      });
+
+      hint.textContent = "Dosti zindabad 😂❤️";
+    }
+
+    busy = false;
+    button.disabled = finished;
+  }, 1200);
+});
+</script>
+
+</body>
+</html>
